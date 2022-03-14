@@ -1,5 +1,5 @@
-import red from 'chalk';
-import { promises } from 'fs';
+const chalk =  require('chalk');
+const fs = require('fs');
 
 function extraiLinks(texto) {
   const regex = /\[([^\]]*)\]\((https?:\/\/[^$#\s].[^\s]*)\)/gm;
@@ -12,17 +12,17 @@ function extraiLinks(texto) {
 }
 
 function trataErro(erro) {
-  throw new Error(red(erro.code, 'não há arquivo no caminho'));
+  throw new Error(chalk.red(erro.code, 'não há arquivo no caminho'));
 }
 
 async function pegaArquivo(caminhoDoArquivo) {
   const encoding = 'utf-8';
   try {
-    const texto = await promises.readFile(caminhoDoArquivo, encoding)
+    const texto = await fs.promises.readFile(caminhoDoArquivo, encoding)
     return extraiLinks(texto);
   } catch(erro) {
     trataErro(erro);
   }
 }
 
-export default pegaArquivo;
+module.exports = pegaArquivo;
